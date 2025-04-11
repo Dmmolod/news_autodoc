@@ -1,5 +1,11 @@
 name: NewsAutodoc
 
+options:
+  deploymentTarget:
+    iOS: 14.0
+  minimumXcodeGenVersion: 2.6.0
+  bundleIdPrefix: com.dmmolod.NewsAutodoc
+
 fileGroups:
   - SupportingFiles
 
@@ -8,10 +14,9 @@ settingGroups:
     FRAMEWORK_SEARCH_PATHS: $(inherited)
     MARKETING_VERSION: 1.0.0
     CURRENT_PROJECT_VERSION: 1
-    ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
     INFOPLIST_FILE: SupportingFiles/Info.plist
     SWIFT_VERSION: "5.7"
-    TARGETED_DEVICE_FAMILY: "1"
+    TARGETED_DEVICE_FAMILY: "1,2"
     PRODUCT_BUNDLE_IDENTIFIER: com.dmmolod.NewsAutodoc
     OTHER_LDFLAGS: $(inherited) "-ObjC"
 
