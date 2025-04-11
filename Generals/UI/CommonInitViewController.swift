@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import Combine
 
 
 /// Для большего контроля в будущем, рекомендуется наследоваться от кастомного объекта
 class CommonInitViewController: UIViewController {
+    var subscription: () -> Cancellable? = { nil }
+    var cancellables: Cancellable? = nil
+    
     // MARK: - Initialization -
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -27,6 +31,13 @@ class CommonInitViewController: UIViewController {
         super.init(coder: coder)
         
         commonInit()
+    }
+    
+    // MARK: - Override methods -
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        cancellables = subscription()
     }
     
     // MARK: - Internal methods -
