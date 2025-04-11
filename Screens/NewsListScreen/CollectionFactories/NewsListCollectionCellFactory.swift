@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct NewsCollectionCellFactory {
+struct NewsListCollectionCellFactory {
     let cellRegistrator: CollectionCellRegistrator
     
     func news(bindings: NewsShortViewBindings) -> CollectionSectionItem {

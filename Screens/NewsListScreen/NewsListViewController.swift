@@ -9,16 +9,16 @@ import UIKit
 import Combine
 
 
-protocol NewsViewControllerBindings {
-    var newsSectionsPublisher: AnyPublisher<[NewsCollectionSection], Never> { get }
+protocol NewsListViewControllerBindings {
+    var newsSectionsPublisher: AnyPublisher<[NewsListCollectionSection], Never> { get }
     func willScrollToEnd()
 }
 
-final class NewsViewController: CommonInitViewController {
+final class NewsListViewController: CommonInitViewController {
     private var collectionView: UICollectionView!
     private var dataSource: NewsCollectionDataSource!
     
-    func bind(to bindings: NewsViewControllerBindings) -> Cancellable {
+    func bind(to bindings: NewsListViewControllerBindings) -> Cancellable {
         return [
             bindings.newsSectionsPublisher
                 .bind(using: dataSource),
@@ -72,10 +72,10 @@ final class NewsViewController: CommonInitViewController {
     }
 }
 
-private typealias NewsCollectionDataSource = ConfiguringDiffableDataSource<NewsCollectionSection>
+private typealias NewsCollectionDataSource = ConfiguringDiffableDataSource<NewsListCollectionSection>
 
 // MARK: - View controller factory methods -
-private extension NewsViewController {
+private extension NewsListViewController {
     private func makeCollectionView() -> UICollectionView {
         let layout = makeLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -104,13 +104,13 @@ private extension NewsViewController {
 }
 
 // MARK: - News section -
-struct NewsCollectionSection: IdentifiableSection {
+struct NewsListCollectionSection: IdentifiableSection {
     let identifier: AnyHashable
     
-    let style: NewsCollectionSectionStyle
+    let style: NewsListCollectionSectionStyle
     let items: [CollectionSectionItem]
 }
 
-enum NewsCollectionSectionStyle: Hashable {
+enum NewsListCollectionSectionStyle: Hashable {
     case list
 }

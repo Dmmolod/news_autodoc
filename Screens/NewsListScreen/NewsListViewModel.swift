@@ -9,20 +9,20 @@ import Foundation
 import Combine
 
 
-final class NewsViewModel: ObservableObject {
-    var flowAction: (NewsViewModelFlowAction) -> () = { _ in }
+final class NewsListViewModel: ObservableObject {
+    var onScreenEvent: (NewsListScreenEvent) -> () = { _ in }
     
     private let newsService: NewsService
-    private var sectionFactory: NewsCollectionSectionFactory
+    private var sectionFactory: NewsListCollectionSectionFactory
     private var paginatedLoader: PaginatedLoader<RemoteNews>!
     
-    @Published private var sections: [NewsCollectionSection] = []
+    @Published private var sections: [NewsListCollectionSection] = []
     
     private var cancellables: [AnyCancellable] = []
     
     init(
         newsService: NewsService,
-        sectionFactory: NewsCollectionSectionFactory
+        sectionFactory: NewsListCollectionSectionFactory
     ) {
         self.newsService = newsService
         self.sectionFactory = sectionFactory
@@ -44,7 +44,7 @@ final class NewsViewModel: ObservableObject {
 }
 
 // MARK: - Private observe helpers -
-extension NewsViewModel {
+extension NewsListViewModel {
     private func observePaginateState() {
         paginatedLoader.stateSubject
             .filter({ !$0.isLoading })
@@ -65,25 +65,20 @@ extension NewsViewModel {
 }
 
 // MARK: - Private handle event helpers -
-extension NewsViewModel {
+extension NewsListViewModel {
     private func showDetailWebView(for news: RemoteNews) {
         guard let urlString = news.fullUrl,
               let url = URL(string: urlString) else {
             return
         }
         
-        flowAction(.detailNewsWebView(url))
+        onScreenEvent(.detailNewsWebView(url))
     }
 }
 
-// MARK: - Flow actions
-enum NewsViewModelFlowAction {
-    case detailNewsWebView(URL)
-}
-
 // MARK: - Bindings for view controller
-extension NewsViewModel: NewsViewControllerBindings {
-    var newsSectionsPublisher: AnyPublisher<[NewsCollectionSection], Never> {
+extension NewsListViewModel: NewsListViewControllerBindings {
+    var newsSectionsPublisher: AnyPublisher<[NewsListCollectionSection], Never> {
         $sections.eraseToAnyPublisher()
     }
     

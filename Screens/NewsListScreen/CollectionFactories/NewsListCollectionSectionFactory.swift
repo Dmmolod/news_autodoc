@@ -8,27 +8,27 @@
 import Foundation
 
 
-enum NewsCollectionSectionFactoryEvent {
+enum NewsListCollectionSectionFactoryEvent {
     case showDetails(RemoteNews)
 }
 
-struct NewsCollectionSectionFactory {
-    var onEvent: (NewsCollectionSectionFactoryEvent) -> () = { _ in }
+struct NewsListCollectionSectionFactory {
+    var onEvent: (NewsListCollectionSectionFactoryEvent) -> () = { _ in }
     
     private let imageService: ImageServiceProtocol
-    private let cellFactory: NewsCollectionCellFactory
+    private let cellFactory: NewsListCollectionCellFactory
     private let counter = Counter()
     
-    init(imageService: ImageServiceProtocol, cellFactory: NewsCollectionCellFactory) {
+    init(imageService: ImageServiceProtocol, cellFactory: NewsListCollectionCellFactory) {
         self.imageService = imageService
         self.cellFactory = cellFactory
     }
     
-    func resetSections(_ news: [RemoteNews]) -> [NewsCollectionSection] {
+    func resetSections(_ news: [RemoteNews]) -> [NewsListCollectionSection] {
         counter.reset()
         
         let items = news.map(makeNewsItem)
-        let newsSection = NewsCollectionSection(
+        let newsSection = NewsListCollectionSection(
             identifier: "news_section:\(counter.next())",
             style: .list,
             items: items

@@ -23,41 +23,11 @@ extension AppDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
-        window.rootViewController = buildNewsScreen()
+        let appDependencies = AppDependenciesFactory.buildAppDependeincies(config: config)
+        AppFlow.setAppFlow(in: window, appDeps: appDependencies)
         window.makeKeyAndVisible()
         
         return true
-    }
-    
-    func buildNewsScreen() -> UIViewController {
-        let networkProvider = AppNetworkProvider()
-        let apiClient = AppApiClient(baseUrl: config.baseUrl, provider: networkProvider)
-        
-        let newsService = AutodocNewsService(apiClient: apiClient)
-        let imageService = UrlSessionImageService(baseUrl: config.imageBaseUrl)
-        
-        let cellRegistrator = CollectionCellRegistrator()
-        let collectionCellFactory = NewsCollectionCellFactory(cellRegistrator: cellRegistrator)
-        let collectionFactory = NewsCollectionSectionFactory(imageService: imageService, cellFactory: collectionCellFactory)
-        
-        let viewModel = NewsViewModel(
-            newsService: newsService,
-            sectionFactory: collectionFactory
-        )
-        
-        let viewController = NewsViewController()
-        viewController.subscription = { [unowned viewController] in
-            viewController.bind(to: viewModel)
-        }
-        
-        viewModel.flowAction = { flowAction in
-            switch flowAction {
-            case let .detailNewsWebView(url):
-                UIApplication.shared.open(url)
-            }
-        }
-        
-        return viewController
     }
 }
 
