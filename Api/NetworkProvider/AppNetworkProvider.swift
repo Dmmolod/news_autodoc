@@ -18,7 +18,20 @@ struct AppNetworkProvider: NetworkProvider {
     }
     
     private func send(_ request: URLRequest) -> AnyPublisher<Data, Error> {
-        URLSession.DataTaskPublisher(request: request, session: .shared)
+        return URLSession.DataTaskPublisher(request: request, session: .shared)
+            .handleEvents(
+                receiveSubscription: { _ in
+                    NetworkLogger.logRequest(request)
+                },
+                receiveOutput: { output in
+                    NetworkLogger.logResponse(output.response, data: output.data, error: nil)
+                },
+                receiveCompletion: { completion in
+                    if case let .failure(error) = completion {
+                        NetworkLogger.logResponse(nil, data: nil, error: error)
+                    }
+                }
+            )
             .tryMap { data, response in
                 let response = response as? HTTPURLResponse
                 let statusCode = response?.statusCode
@@ -28,7 +41,10 @@ struct AppNetworkProvider: NetworkProvider {
                     return data
                 } else {
                     let body = data.isEmpty ? nil : data
-                    throw AppNetworkProviderResponseError(statusCode: statusCode, body: body)
+                    let error = AppNetworkProviderResponseError(statusCode: statusCode, body: body)
+                    NetworkLogger.logResponse(response, data: data, error: error)
+                    
+                    throw error
                 }
             }
             .eraseToAnyPublisher()

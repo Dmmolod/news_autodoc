@@ -14,6 +14,16 @@ struct AppApiClient: ApiClient {
     private let decoder: JSONDecoder
     private let provider: NetworkProvider
     
+    init(
+        baseUrl: URL,
+        decoder: JSONDecoder = JSONDecoder(),
+        provider: NetworkProvider
+    ) {
+        self.baseUrl = baseUrl
+        self.decoder = decoder
+        self.provider = provider
+    }
+    
     // MARK: - Internal methods -
     func request(_ endpoint: ApiEndpoint) -> AnyPublisher<Data, any Error> {
         let target = AppApiClientNetworkTarget(
@@ -30,6 +40,10 @@ struct AppApiClient: ApiClient {
     func requestModel<Model: Decodable>(_ endpoint: ApiEndpoint) -> AnyPublisher<Model, any Error> {
         request(endpoint)
             .tryMap(tryToDecodeRequest)
+            .mapError({ error in
+                AppApiClientErrorLogger.log(error)
+                return error
+            })
             .eraseToAnyPublisher()
     }
 }
