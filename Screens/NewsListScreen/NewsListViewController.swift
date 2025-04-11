@@ -51,7 +51,8 @@ final class NewsListViewController: CommonInitViewController {
         
         let titleLabel = UILabel()
         titleLabel.text = "Новости"
-        titleLabel.font = .systemFont(ofSize: 22, weight: .semibold)
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 28, weight: .semibold)
         
         let titleStack = UIStackView(arrangedSubviews: [titleLabel])
         titleStack.isLayoutMarginsRelativeArrangement = true

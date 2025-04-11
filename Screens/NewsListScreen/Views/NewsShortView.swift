@@ -91,10 +91,10 @@ final class NewsShortView: CommonInitView, CombineConfiguringView {
         )
         
         containerView = UIView()
-        containerView.backgroundColor = .black.withAlphaComponent(0.03)
-        containerView.layer.cornerRadius = 8
-        containerView.layer.borderColor = UIColor.black.withAlphaComponent(0.3).cgColor
-        containerView.layer.borderWidth = 1
+        containerView.backgroundColor = .black.withAlphaComponent(0.02)
+        containerView.layer.cornerRadius = 12
+        containerView.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
+        containerView.layer.borderWidth = 0.8
         containerView.clipsToBounds = true
     }
     
