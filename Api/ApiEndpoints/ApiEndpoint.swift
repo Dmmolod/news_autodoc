@@ -11,7 +11,10 @@ struct ApiEndpoint {
     let method: ApiMethod
     let path: String
     
-    /// Default: - method: .get
+    /// По умолчанию *method* = *.get*
+    /// - Parameters:
+    ///   - method: метод запроса
+    ///   - path: путь по которому будет доставлен запрос
     init(
         method: ApiMethod = .get,
         path: String

@@ -9,6 +9,7 @@ import UIKit
 
 
 enum AppFlow {
+    
     static func setAppFlow(
         in window: UIWindow,
         appDeps: AppDependencies
@@ -19,4 +20,5 @@ enum AppFlow {
         
         NewsFlow.pushNewsList(in: navigationController, deps: appDeps)
     }
+    
 }

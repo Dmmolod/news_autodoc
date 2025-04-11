@@ -18,6 +18,7 @@ struct AppDependencies: AppDependenciesProtocol {
     init(services: Services) {
         self.services = services
     }
+    
 }
 
 extension AppDependencies: ImageLoadingDependencies {

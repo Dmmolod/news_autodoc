@@ -9,7 +9,22 @@ import UIKit
 import Combine
 
 
+/// Расширение для `Publisher`, где элементы вывода — это коллекции (`Collection`),
+/// а ошибка не возникает.
+///
+/// Это расширение добавляет метод `bind`, который связывает исходный поток данных с `UICollectionViewDiffableDataSource`,
+/// позволяя обновлять интерфейс с помощью диффабельного снапшота.
 extension Publisher where Output: Collection, Failure == Never {
+    
+    /// Метод связывает данные из `Publisher` с `UICollectionViewDiffableDataSource`,
+    /// чтобы обновить UI с использованием снапшота данных. Содержимое коллекции
+    /// будет отражаться в коллекции (например, в `UICollectionView`).
+    ///
+    /// - Parameters:
+    ///   - dataSource: `UICollectionViewDiffableDataSource`, с которым связываются данные.
+    ///   - Section: Тип секции, который должен соответствовать протоколу `IdentifiableSection`.
+    ///
+    /// - Returns: Возвращает `AnyCancellable`, чтобы можно было отменить подписку при необходимости.
     func bind<Section: IdentifiableSection>(
         using dataSource: UICollectionViewDiffableDataSource<Section, Section.Item>,
     ) -> AnyCancellable where Output.Element == Section {

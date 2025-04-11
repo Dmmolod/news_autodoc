@@ -17,6 +17,9 @@ struct AppNetworkProvider: NetworkProvider {
             .eraseToAnyPublisher()
     }
     
+    /// Отправка запроса в сеть, успешные запросы с кодами - 200...299
+    /// - Parameter request: сам запрос
+    /// - Returns: возвращает паблишера с данными ответа или ошибкой
     private func send(_ request: URLRequest) -> AnyPublisher<Data, Error> {
         return URLSession.DataTaskPublisher(request: request, session: .shared)
             .handleEvents(
